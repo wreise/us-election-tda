@@ -53,10 +53,12 @@ def get_region_plot(pipe, data, layout, node_elements,
     # 2. hide scale of marker color
     plotly_kwargs = {
         'node_trace_marker_size': [1] * len(node_elements),
-        'node_trace_marker_showscale': False}
+        'node_trace_marker_showscale': False,
+        'node_trace_hoverlabel': node_color,
+        'node_trace_marker_color': node_color
+    }
     return visualization.plot_static_mapper_graph(pipe, data,
                                                   layout, layout_dim=2,
-                                                  node_color_statistic=node_color,
                                                   color_by_columns_dropdown=True,
                                                   plotly_kwargs=plotly_kwargs)
 
