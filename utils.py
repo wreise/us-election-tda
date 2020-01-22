@@ -6,6 +6,23 @@ import matplotlib.colors
 import pandas as pd
 
 
+def get_filtered_values(v, indices):
+    """Copy v and put NaNs in indices
+    Parameters
+    ----------
+    v : np array of values,
+
+    indices : list or iterable of indices, for whch the value should be set to NaN
+
+    Returns
+    -------
+    v_  : acopy of v, with NaNs at inidices given by `indices`
+    """
+    v_ = v.copy()
+    v_[indices] = np.NaN
+    return v_
+
+
 def get_cols_by_type():
     '''Function to get different columns
 
