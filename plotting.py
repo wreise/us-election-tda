@@ -2,7 +2,7 @@ import plotly.figure_factory as ff
 import utils
 import itertools
 import collections
-from gtda.mapper import visualization
+from gtda.mapper import plot_static_mapper_graph
 import numpy as np
 
 
@@ -57,10 +57,10 @@ def get_region_plot(pipe, data, layout, node_elements,
         'node_trace_hoverlabel': node_color,
         'node_trace_marker_color': node_color
     }
-    return visualization.plot_static_mapper_graph(pipe, data,
-                                                  layout, layout_dim=2,
-                                                  color_by_columns_dropdown=True,
-                                                  plotly_kwargs=plotly_kwargs)
+    return plot_static_mapper_graph(pipe, data,
+                                    layout, layout_dim=2,
+                                    color_by_columns_dropdown=True,
+                                    plotly_kwargs=plotly_kwargs)
 
 
 def get_graph_plot_colored_by_election_results(pipeline, year, df, data):
@@ -119,11 +119,11 @@ def get_graph_plot_colored_by_election_results(pipeline, year, df, data):
                                       df[df['year'] == year]['n_electors']
                                       .reset_index(drop=True)))}
 
-    return visualization.plot_static_mapper_graph(pipeline, data,
-                                                  'kk', layout_dim=2,
-                                                  node_color_statistic=node_color,
-                                                  color_by_columns_dropdown=True,
-                                                  plotly_kwargs=plotly_kwargs)
+    return plot_static_mapper_graph(pipeline, data,
+                                    'kk', layout_dim=2,
+                                    node_color_statistic=node_color,
+                                    color_by_columns_dropdown=True,
+                                    plotly_kwargs=plotly_kwargs)
 
 
 def get_county_plot(fips, values, colorscale=["#0000ff", "#ff0000"], title='',
