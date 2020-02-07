@@ -10,13 +10,13 @@ def get_filtered_values(v, indices):
     """Copy v and put NaNs in indices
     Parameters
     ----------
-    v : np array of values,
+    v : ndarray,
 
-    indices : list or iterable of indices, for whch the value should be set to NaN
+    indices : list or iterable of indices, for which the value should be set to NaN
 
     Returns
     -------
-    v_  : acopy of v, with NaNs at inidices given by `indices`
+    v_  : a copy of v, with NaNs at indices given by `indices`
     """
     v_ = v.copy()
     v_[indices] = np.NaN
