@@ -13,14 +13,12 @@ def get_region_plot(pipe, data, layout, node_elements,
     
     Parameters
     ----------
-    graph : igraph object
-        Mapper graph
+    pipe : MapperPipeline
+        The Mapper pipeline to compute the mapper-graph
     data : ndarray (n_samples x n_dim)
         Data used for mapper
     layout : igraph.layout.Layout
         Layout of graph
-    columns_to_color : list
-        List of columns to color by
     node_elements : tuple
         Tuple of arrays where array at positin x contains the data points for
         node x
@@ -57,26 +55,33 @@ def get_region_plot(pipe, data, layout, node_elements,
         'node_trace_hoverlabel': node_color,
         'node_trace_marker_color': node_color
     }
-    return plot_static_mapper_graph(pipe, data,
-                                    layout, layout_dim=2,
-                                    color_by_columns_dropdown=True,
-                                    plotly_kwargs=plotly_kwargs)
+    
+    fig = plot_static_mapper_graph(pipe, data,
+                                   layout, layout_dim=2,
+                                   color_by_columns_dropdown=False,
+                                   plotly_kwargs=plotly_kwargs)
+    # update colors to fig
+    fig._data[1]['marker']['color'] = node_color # hack around with the new api
+    return fig
 
 
-def get_graph_plot_colored_by_election_results(pipeline, year, df, data):
+def get_graph_plot_colored_by_election_results(pipeline, year, df, data, keep_layout):
     '''Function make plot of US with counties colored by winner of election
     
     Parameters
     ----------
-    graph : igraph object
-        Mapper graph
+    pipe : MapperPipeline
+        The Mapper pipeline to compute the mapper-graph
+    year : np.int
+        Color by election results from year `year`
     df : pandas data frame
         Data frame containing info of winner per county, year of election and
         number of electors in county
     data : ndarray (n_samples x n_dim)
         Data used for mapper
-    layout : igraph.layout.Layout (default: None)
-        Layout of graph
+    keep_layout : list of two dicts, with keys 'x', 'y', and such that values are 1d arrays
+        Positions of lines (keep_layout[0]) and markers respectively (keep_layout[1])
+        for the mapper graph
 
     Returns
     -------
@@ -119,11 +124,15 @@ def get_graph_plot_colored_by_election_results(pipeline, year, df, data):
                                       df[df['year'] == year]['n_electors']
                                       .reset_index(drop=True)))}
 
-    return plot_static_mapper_graph(pipeline, data,
-                                    'kk', layout_dim=2,
-                                    node_color_statistic=node_color,
-                                    color_by_columns_dropdown=True,
-                                    plotly_kwargs=plotly_kwargs)
+    fig = plot_static_mapper_graph(pipeline, data,
+                                   'kk', layout_dim=2,
+                                   node_color_statistic=node_color,
+                                   color_by_columns_dropdown=True,
+                                   plotly_kwargs=plotly_kwargs)
+    if keep_layout is not None:
+        fig._data[0].update(keep_layout[0])
+        fig._data[1].update(keep_layout[1])
+    return fig
 
 
 def get_county_plot(fips, values, colorscale=["#0000ff", "#ff0000"], title='',

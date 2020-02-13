@@ -6,6 +6,9 @@ import matplotlib.colors
 import pandas as pd
 
 
+def get_reference_layout(figure):
+    return [{c_x: figure._data[idc][c_x] for c_x in ['x', 'y']} for idc, c in enumerate(['lines', 'edges'])]
+
 def get_filtered_values(v, indices):
     """Copy v and put NaNs in indices
     Parameters
